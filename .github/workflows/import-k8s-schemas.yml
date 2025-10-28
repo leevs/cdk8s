@@ -18,10 +18,10 @@ jobs:
       - name: Check for new K8s version
         id: check
         run: |
-          # Get latest stable release
+          # Get latest stable release with .0 patch version (v1.xx.0 only)
           LATEST=$(curl -s \
             https://api.github.com/repos/kubernetes/kubernetes/releases | \
-            jq -r '[.[] | select(.prerelease == false) | .tag_name][0]' | \
+            jq -r '[.[] | select(.prerelease == false) | .tag_name | select(endswith(".0"))][0]' | \
             sed 's/^v//')
 
           echo "latest=$LATEST" >> $GITHUB_OUTPUT
